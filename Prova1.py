@@ -3,7 +3,27 @@ from iapws import IAPWS97 as tb
 import sympy
 from sympy.solvers import solve
 from sympy import Eq
+import tkinter as tk
+from tkinter import *
+from tkinter import ttk
+#from tkinter import PhotoImage
 
+parent = tk.Tk()
+parent.title("Evaporador NaOH de Triplo Efeito")
+
+frm = ttk.Frame(parent,width=600,height=300)
+frm.grid_propagate(0)
+frm.grid()
+
+image = PhotoImage(file="imagem.png")
+image_label = tk.Label(parent, image=image)
+
+#tk.Label(frm, text="Teste").grid(column=0, row=1)
+#ttk.Button(frm, text="Quit", command=parent.destroy).grid(column=1, row=1)
+
+frm.pack()
+image_label.pack()
+parent.mainloop()
 
 #-----------------------------#
 ############ DADOS ############
@@ -211,9 +231,9 @@ while refazer_T:
             Areas()
 
 print('as frações de vapres são:\nx1',x[1],'\nx2',x[2],'\nx3',x[3])
-print('Áreas 1, 2 e 3 são, respectivamente,',A1,A2,A3)
+print('Áreas são:','\nA1:',A1,'\nA2:',A2,'\nA3:',A3)
 print('Entalpias são:\nhl1',hl1,'\nHv1',Hv1,'\nhl2',hl2,'\nHv2',Hv2,'\nhl3',hl3,'\nHv3',Hv3)
-print('as temperaturas são','\nT1',T1,'\nT2',T2,'\nT3',T3)
+print('As temperaturas são','\nT1',T1,'\nT2',T2,'\nT3',T3)
 
 
 
