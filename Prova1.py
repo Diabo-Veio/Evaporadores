@@ -13,10 +13,11 @@ parent.title("Evaporador NaOH de Triplo Efeito")
 
 frm = ttk.Frame(parent,width=600,height=300)
 frm.grid_propagate(0)
-frm.grid()
+
 
 image = PhotoImage(file="imagem.png")
 image_label = tk.Label(parent, image=image)
+image_label.grid(row=0,column=0)
 
 #tk.Label(frm, text="Teste").grid(column=0, row=1)
 #ttk.Button(frm, text="Quit", command=parent.destroy).grid(column=1, row=1)
