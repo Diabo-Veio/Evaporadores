@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.optimize import minimize
 from iapws import IAPWS97 as tb
 import sympy
 from sympy.solvers import solve
@@ -18,7 +17,7 @@ Tf = 37.8 #°C
 Ps = 1.5/10.197 #Kgf/cm2 para MPa
 ## Alvo do Processo ##
 P3 = 70/7501 #mmHg para Mpa -- Pressão no evap 3
-x3 = 0.5
+x3 = 0.4
 ## Coef de troxca termica ##
 U1 = 21338.4 #Kj/h*m2*C
 U2 = 11547.84 #Kj/h*m2*C
@@ -124,7 +123,7 @@ def Distribuicao_DeltaT():
     output1 = solve([eq1,eq2,eq3],ΔT1,ΔT2,ΔT3,dict=True)
 
 def Balanco_de_Energia():
-    global desv,output2,S,Hv1,hl1,Hv2,hl2,hd2,hd3
+    global desv,output2,S,Hv1,hl1,Hv2,hl2,hd2,hd3,T1,T2
 
     ##--------------##
     ## Temperatura ###
@@ -211,7 +210,10 @@ while refazer_T:
             Balanco_de_Energia()
             Areas()
 
-print(x)
+print('as frações de vapres são:\nx1',x[1],'\nx2',x[2],'\nx3',x[3])
+print('Áreas 1, 2 e 3 são, respectivamente,',A1,A2,A3)
+print('Entalpias são:\nhl1',hl1,'\nHv1',Hv1,'\nhl2',hl2,'\nHv2',Hv2,'\nhl3',hl3,'\nHv3',Hv3)
+print('as temperaturas são','\nT1',T1,'\nT2',T2,'\nT3',T3)
 
 
 
