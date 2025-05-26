@@ -4,7 +4,7 @@ from tkinter import *
 from tkinter import ttk
 
 #-----------------------------#
-########### Tela ###########
+### Variaveis para treeview ###
 #-----------------------------#
 variaveis = ['x1','x2','x3','A1','A2','A3','hl1','Hv1','hl2','Hv2','hl3','Hv3','T1','T2','T3']
 unidades = ['-','-','-','m²','m²','m²','Kj/Kg','Kj/Kg','hlKj/Kg2','Kj/Kg','Kj/Kg','Kj/Kg','°C','°C','°C']
@@ -12,6 +12,7 @@ ids = []
 #-----------------------------#
 ########### Tela ###########
 #-----------------------------#
+
 #inicia a janela de interface grafica
 parent = Tk()
 parent.title("Evaporador NaOH de Triplo Efeito")
@@ -23,7 +24,7 @@ image_label.grid(row=0, column=0,columnspan=4)
 #endregion
 
 #region Declaração de campos para input
-##--------------------------------------------##
+##Decalaraão de Etiquetas
 L_Tf = Label(parent, text = "Tf: ")
 L_Tf.grid(row = 1, column = 0,sticky = E)
 L_F = Label(parent, text = "F: ")
@@ -42,7 +43,7 @@ L_U2 = Label(parent, text = "U2: ")
 L_U2.grid(row = 3, column = 2,sticky = E)
 L_U3 = Label(parent, text = "U3: ")
 L_U3.grid(row = 4, column = 2,sticky = E)
-
+##Decalaraão dos Campos
 E_Tf = Entry(parent)
 E_Tf.grid(row = 1, column = 1, pady = 2,sticky = W)
 E_F = Entry(parent)
@@ -76,17 +77,16 @@ E_U2.insert(END,11547.84)
 E_U3.insert(END,7782.24)
 #endregion
 
-#region Tabela para mostrar resultados
+#region Declaração da tabela para mostrar resultados
 tree=ttk.Treeview(parent,columns=range(3),height=15)
 tree.grid(row=6, column=0,columnspan=4)
 ##Cabeçalho da tabela
 tree.heading('#0', text='Variável')
 tree.heading('#1', text='Valor')
 tree.heading('#2', text='Unidade')
-
 #endregion
 
-#region Atribuição de variáveis
+#region Roda o programa e exibe os valores
 def valores():
     _Tf = float(E_Tf.get())
     _F = float(E_F.get())
@@ -104,14 +104,9 @@ def valores():
         
 #endregion
 
-#region Testes
-Calc = Button(parent, text="Teste", command=lambda:print(E_x3.get()))
-Calc.grid(row=7, column=3,columnspan=2)
-#endregion
-
 #region Botão para chamar o script de calculo
 Calc = Button(parent, text="Calculate", command=lambda:valores())
-Calc.grid(row=7, column=0,columnspan=2)
+Calc.grid(row=7, column=0,columnspan=4)
 #endregion
 
 parent.mainloop()
