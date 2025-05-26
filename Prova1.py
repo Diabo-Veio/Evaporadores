@@ -8,7 +8,7 @@ from tkinter import ttk
 #-----------------------------#
 variaveis = ['x1','x2','x3','A1','A2','A3','hl1','Hv1','hl2','Hv2','hl3','Hv3','T1','T2','T3']
 unidades = ['-','-','-','m²','m²','m²','Kj/Kg','Kj/Kg','hlKj/Kg2','Kj/Kg','Kj/Kg','Kj/Kg','°C','°C','°C']
-
+ids = []
 #-----------------------------#
 ########### Tela ###########
 #-----------------------------#
@@ -98,8 +98,10 @@ def valores():
     _U2 = float(E_U2.get())
     _U3 = float(E_U3.get())
     a = loop(_xf,_F,_Tf,_Ps,_P3,_x3,_U1,_U2,_U3)
+    tree.delete(*tree.get_children())
     for i in a:
         tree.insert('', a.index(i), text= variaveis[a.index(i)], values=(i,unidades[a.index(i)]))
+        
 #endregion
 
 #region Testes
