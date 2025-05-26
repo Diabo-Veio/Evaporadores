@@ -7,7 +7,7 @@ from tkinter import ttk
 ### Variaveis para treeview ###
 #-----------------------------#
 variaveis = ['x1','x2','x3','A1','A2','A3','hl1','Hv1','hl2','Hv2','hl3','Hv3','T1','T2','T3']
-unidades = ['-','-','-','m²','m²','m²','Kj/Kg','Kj/Kg','hlKj/Kg2','Kj/Kg','Kj/Kg','Kj/Kg','°C','°C','°C']
+unidades = ['-','-','-','m²','m²','m²','Kj/Kg','Kj/Kg','Kj/Kg','Kj/Kg','Kj/Kg','Kj/Kg','°C','°C','°C']
 ids = []
 #-----------------------------#
 ########### Tela ###########
