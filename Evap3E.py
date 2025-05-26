@@ -4,68 +4,45 @@ import sympy
 from sympy.solvers import solve
 from sympy import Eq
 
+def iniciando():
+    global x,hl1,hl2,hl3,hd1,hd2,hd3,Hv1,Hv2,Hv3,V1,V2,V3,L1,L2,L3,T1,T2,T3,Ts,Td1,Td2,Td3,EPE1,EPE2,EPE3
+    global θ1,θ2,θ3,Tsat3,ΔT,λs,SomaVi,S,ΔT1,ΔT2,ΔT3,s,v1,v2,refazer_T,refazer_A,desv_A,A1,A2,A3
+    #-----------------------------#
+    ##### Iniciando Variáveis #####
+    #-----------------------------#
 
-#-----------------------------#
-############ DADOS ############
-#-----------------------------#
-
-## Dados da alimentação ##
-xf = 0.05
-F = 38000 #Kg/h
-Tf = 37.8 #°C
-## Steam ##
-Ps = 1.5/10.197 #Kgf/cm2 para MPa
-## Alvo do Processo ##
-P3 = 70/7501 #mmHg para Mpa -- Pressão no evap 3
-x3 = 0.4
-## Coef de troxca termica ##
-U1 = 21338.4 #Kj/h*m2*C
-U2 = 11547.84 #Kj/h*m2*C
-U3 = 7782.24 #Kj/h*m2*C
-
-#-----------------------------#
-##### Iniciando Variáveis #####
-#-----------------------------#
-
-## Frações de Soluto ##
-x = np.zeros(4)
-x[0]= xf 
-x[3]= x3 
-#Entalpia
-hl1 = hl2 = hl3 = 0
-hd1 = hd2 = hd3 = 0
-Hv1 = Hv2 = Hv3 = 0
-#Vapor
-V1 = V2 = V3 = 0
-#Liquido
-L1 = L2 = L3 = 0
-#Temperaturas
-T1 = T2 = T3 = Ts = 0
-Td1 = Td2 = Td3 = 0
-#Elevação do Ponto de Ebulição
-EPE1 = EPE2 = EPE3 = 0
-#θ para caluco de Cp
-θ1 = θ2 = θ3 = 0
-#Veriáveis Pontuais
-Tsat3 = 0
-ΔT = 0
-λs = 0
-SomaVi = 0
-S = 0
-## Variáveis para resolução dos sistemas ##
-ΔT1 , ΔT2 , ΔT3 = sympy.symbols('ΔT1 , ΔT2 , ΔT3')
-s , v1 , v2 = sympy.symbols('s , v1 , v2')
-## Distribuição de Vapores ##
-L3 = (F*x[0])/x[3]
-SomaVi = F-L3
-V1=V2=V3=SomaVi/3
-desv = np.zeros(3)
-##Bool
-refazer_T = True
-refazer_A = True
-##Áreas
-desv_A = np.zeros(3)
-A1=A2=A3=0
+    ## Frações de Soluto ##
+    x = np.zeros(4)
+    #Entalpia
+    hl1 = hl2 = hl3 = 0
+    hd1 = hd2 = hd3 = 0
+    Hv1 = Hv2 = Hv3 = 0
+    #Vapor
+    V1 = V2 = V3 = 0
+    #Liquido
+    L1 = L2 = L3 = 0
+    #Temperaturas
+    T1 = T2 = T3 = Ts = 0
+    Td1 = Td2 = Td3 = 0
+    #Elevação do Ponto de Ebulição
+    EPE1 = EPE2 = EPE3 = 0
+    #θ para caluco de Cp
+    θ1 = θ2 = θ3 = 0
+    #Veriáveis Pontuais
+    Tsat3 = 0
+    ΔT = 0
+    λs = 0
+    SomaVi = 0
+    S = 0
+    ## Variáveis para resolução dos sistemas ##
+    ΔT1 , ΔT2 , ΔT3 = sympy.symbols('ΔT1 , ΔT2 , ΔT3')
+    s , v1 , v2 = sympy.symbols('s , v1 , v2')
+    ##Bool
+    refazer_T = True
+    refazer_A = True
+    ##Áreas
+    desv_A = np.zeros(3)
+    A1=A2=A3=0
 
 def Balanco_de_Massa():
     
@@ -192,8 +169,26 @@ def Areas():
     else:
         refazer_A = False
 
-def loop():
-    global refazer_T
+def loop(_xf,_F,_Tf,_Ps,_P3,_x3,_U1,_U2,_U3):
+    global refazer_T,xf,F,Tf,Ps,P3,x3,U1,U2,U3,x,L3,V1,V2,V3,SomaVi,desv
+    xf = _xf
+    F = _F
+    Tf = _Tf
+    Ps = _Ps
+    P3 = _P3
+    x3 = _x3
+    U1 = _U1
+    U2 = _U2
+    U3 = _U3
+    ## Distribuição de Valores ##
+    iniciando()
+    x[0]= xf 
+    x[3]= x3 
+    L3 = (F*x[0])/x[3]
+    SomaVi = F-L3
+    V1=V2=V3=SomaVi/3
+    desv = np.zeros(3)
+
     while refazer_T:
         Balanco_de_Massa()
         Levantamento_de_Dados()
@@ -211,7 +206,4 @@ def loop():
             while refazer_A:
                 Balanco_de_Energia()
                 Areas()
-    print('as frações de vapres são:\nx1',x[1],'\nx2',x[2],'\nx3',x[3])
-    print('Áreas são:','\nA1:',A1,'\nA2:',A2,'\nA3:',A3)
-    print('Entalpias são:\nhl1',hl1,'\nHv1',Hv1,'\nhl2',hl2,'\nHv2',Hv2,'\nhl3',hl3,'\nHv3',Hv3)
-    print('As temperaturas são','\nT1',T1,'\nT2',T2,'\nT3',T3)
+    return x[1],x[2],x[3],A1,A2,A3,hl1,Hv1,hl2,Hv2,hl3,Hv3,T1,T2,T3
