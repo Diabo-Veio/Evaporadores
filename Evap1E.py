@@ -7,13 +7,11 @@ from sympy import Eq
 #-----------------------------#
 ############ DADOS ############
 #-----------------------------#
-F_ = 4536 #Kg/h
-Tf_ = 60 #°C
-P_ = 0.0117 #Mpa
-Ps_ = 0.1724 #Mpa
-xf_ = 0.2
-xl_ = 0.5
-U_ = 1560 #W/m²*K
+
+
+def zerando():
+    global L_,V_,T_,Tsat_,EPE_,hf_,hl_,Hv_,S_,q_,A_,Economia_,θ_,Cp_,λs_
+    L_=V_=T_=Tsat_=EPE_=hf_=hl_=Hv_=S_=q_=A_=Economia_=θ_=Cp_=λs_=0
 
 def Balanço_de_Massa():
     global L_,V_
@@ -26,7 +24,7 @@ def Ponto_de_Eb():
     T_ = Tsat_+EPE_
     Ts_ = tb(P=Ps_,x=0.999999).T-273.15
 def entalpias():
-    global hf_,hl_,Hv_,λs_
+    global hf_,hl_,Hv_,λs_,θ_,Cp_
     hf_ = (-10.25 - 319.591837*xf_ + 939.795918*xf_**2 + 0.963929*(32+Tf_*(9/5)) - 0.335714*xf_*(32+Tf_*(9/5)))*2.326  ## Kj/Kg - Entalpia da Alimentação
     
     hl_ = (-10.25 - 319.591837*xl_ + 939.795918*xl_**2 + 0.963929*(32+T_*(9/5)) - 0.335714*xl_*(32+T_*(9/5)))*2.326  ## Kj/Kg - Entalpia do Líquido
@@ -36,13 +34,24 @@ def entalpias():
     
     λs_ = (1094.002 - 0.57342487*(32+Ts_*(9/5)) + 1.5049887E-4*(32+Ts_*(9/5))**2 - 9.3061810E-7*(32+Ts_*(9/5))**3)*2.326
 def sistema_final():
+    global S_,q_,A_,Economia_
     S_ = ((L_*hl_)+(V_*Hv_)-(F_*hf_))/λs_
     q_ = S_*(λs_*1/(60*60))
     A_ = (q_*1000)/(U_*(Ts_-T_))
     Economia_ = V_/S_
-    print(A_,Economia_)
 
-Balanço_de_Massa()
-Ponto_de_Eb()
-entalpias()
-sistema_final()
+def loop_1(xf,_F,_Tf,_Ps,_P,_xl,_U,):
+    global F_,Tf_,P_,Ps_,xf_,xl_,U_
+    F_ = _F
+    Tf_ = _Tf
+    P_ = _P
+    Ps_ = _Ps
+    xf_ = xf
+    xl_ = _xl
+    U_ = _U
+    zerando()
+    Balanço_de_Massa()
+    Ponto_de_Eb()
+    entalpias()
+    sistema_final()
+    return A_,Economia_
