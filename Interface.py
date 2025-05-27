@@ -52,8 +52,8 @@ class Tripo_Efeito(tk.Frame):
         #-----------------------------#
         ### Variaveis para treeview ###
         #-----------------------------#
-        variaveis = ['x1','x2','x3','A1','A2','A3','hl1','Hv1','hl2','Hv2','hl3','Hv3','T1','T2','T3']
-        unidades = ['-','-','-','m²','m²','m²','Kj/Kg','Kj/Kg','Kj/Kg','Kj/Kg','Kj/Kg','Kj/Kg','°C','°C','°C']
+        variaveis = ['S','V1','V2','V3','x1','x2','T1','T2','A1','A2','A3','hl1','Hv1','hl2','Hv2','hl3','Hv3','Economia']
+        unidades = ['Kg/h','Kg/h','Kg/h','Kg/h','-','-','°C','°C','m²','m²','m²','Kj/Kg','Kj/Kg','Kj/Kg','Kj/Kg','Kj/Kg','Kj/Kg','-']
         #-----------------------------#
         ########### Tela ###########
         #-----------------------------#
@@ -185,8 +185,8 @@ class Simples_Efeito(tk.Frame):
         #-----------------------------#
         ### Variaveis para treeview ###
         #-----------------------------#
-        variaveis = ['A','hl','Hv','T','Economia']
-        unidades = ['m²','Kj/Kg','Kj/Kg','°C','-']
+        variaveis = ['S','Economia','A','hl','Hv','T']
+        unidades = ['Kg/s','-','m²','Kj/Kg','Kj/Kg','°C']
         #-----------------------------#
         ########### Tela ###########
         #-----------------------------#

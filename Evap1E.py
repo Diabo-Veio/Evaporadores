@@ -54,4 +54,4 @@ def loop_1(xf,_F,_Tf,_Ps,_P,_xl,_U,):
     Ponto_de_Eb()
     entalpias()
     sistema_final()
-    return A_,Economia_
+    return S_,Economia_,A_,hl_,Hv_,T_

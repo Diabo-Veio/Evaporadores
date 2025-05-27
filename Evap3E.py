@@ -210,4 +210,5 @@ def loop(_xf,_F,_Tf,_Ps,_P3,_x3,_U1,_U2,_U3):
             while refazer_A:
                 Balanco_de_Energia()
                 Areas()
-    return x[1],x[2],x[3],A1,A2,A3,hl1,Hv1,hl2,Hv2,hl3,Hv3,T1,T2,T3
+        Economia = S/(SomaVi)
+    return S,V1,V2,V3,x[1],x[2],T1,T2,A1,A2,A3,hl1,Hv1,hl2,Hv2,hl3,Hv3,Economia
