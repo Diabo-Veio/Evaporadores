@@ -6,7 +6,7 @@ from sympy import Eq
 
 def iniciando():
     global x,hl1,hl2,hl3,hd1,hd2,hd3,Hv1,Hv2,Hv3,V1,V2,V3,L1,L2,L3,T1,T2,T3,Ts,Td1,Td2,Td3,EPE1,EPE2,EPE3
-    global θ1,θ2,θ3,Tsat3,ΔT,λs,SomaVi,S,ΔT1,ΔT2,ΔT3,s,v1,v2,refazer_T,refazer_A,desv_A,A1,A2,A3
+    global θ1,θ2,θ3,T3sat,ΔT,λs,SomaVi,S,ΔT1,ΔT2,ΔT3,s,v1,v2,refazer_T,refazer_A,desv_A,A1,A2,A3
     #-----------------------------#
     ##### Iniciando Variáveis #####
     #-----------------------------#
@@ -29,7 +29,7 @@ def iniciando():
     #θ para caluco de Cp
     θ1 = θ2 = θ3 = 0
     #Veriáveis Pontuais
-    Tsat3 = 0
+    T3sat = 0
     ΔT = 0
     λs = 0
     SomaVi = 0
@@ -55,7 +55,7 @@ def Balanco_de_Massa():
     x[2] = (L1*x[1])/L2
 
 def Levantamento_de_Dados():
-    global Ts,hf,Hv3,hl3,EPE3,Tsat3,T3,λs
+    global Ts,hf,hl3,EPE3,T3sat,T3,λs
 
     ##-------## 
     ## Steam ##
@@ -76,20 +76,19 @@ def Levantamento_de_Dados():
     ##----------##
 
     # T #
-    Tsat3 = tb(P=P3,x=0.9999).T - 273                                                                                   ## °C - Temperatura do Vapor Saturado na Pressão do Evap 3
-    EPE3 = (271.3627*x[3]**2 - 9.419608*x[3] + 0.1419526*x[3]*(32+Tsat3*(9/5)))*5/9                                     ## °C - Elevação do Ponto de Ebulição
-    T3 = Tsat3+EPE3                                                                                                     ## °C - Temperatura do Evap 3
+    T3sat = tb(P=P3,x=0.9999).T - 273.15                                                                                   ## °C - Temperatura do Vapor Saturado na Pressão do Evap 3
+    EPE3 = (271.3627*x[3]**2 - 9.419608*x[3] + 0.1419526*x[3]*(32+T3sat*(9/5)))*5/9                                     ## °C - Elevação do Ponto de Ebulição
+    T3 = T3sat+EPE3                                                                                                     ## °C - Temperatura do Evap 3
     # H #
-    hl3 = (-10.25 - 319.591837*x[3] + 939.795918*x[3]**2 + 0.963929*(32+T3*(9/5)) - 0.335714*x[3]*(32+T3*(9/5)))*2.326  ## Kj/Kg - Entalpia do Líquido 3
-    Hv3 = tb(P=P3,T=T3+273.15).h                                                                                        ## Kj/Kg - Entalpia do Vapor 3
+    hl3 = (-10.25 - 319.591837*x[3] + 939.795918*x[3]**2 + 0.963929*(32+T3*(9/5)) - 0.335714*x[3]*(32+T3*(9/5)))*2.326  ## Kj/Kg - Entalpia do Líquido 3                                                                                   ## Kj/Kg - Entalpia do Vapor 3
 
 def DeltaT():
     global EPE1,EPE2,ΔT
-    T1 = Tsat3+2*((Ts-Tsat3)/3)
-    T2 = Tsat3+((Ts-Tsat3)/3)
+    T1 = T3sat+2*((Ts-T3sat)/3)
+    T2 = T3sat+((Ts-T3sat)/3)
     EPE1 = (271.3627*x[1]**2 - 9.419608*x[1] + 0.1419526*x[1]*(32+T1*(9/5)))*5/9
     EPE2 = (271.3627*x[2]**2 - 9.419608*x[2] + 0.1419526*x[2]*(32+T2*(9/5)))*5/9
-    ΔT = (Ts)-Tsat3-(EPE1+EPE2+EPE3)
+    ΔT = (Ts)-T3sat-(EPE1+EPE2+EPE3)
 
 def Distribuicao_DeltaT():
     global output1
@@ -100,7 +99,7 @@ def Distribuicao_DeltaT():
     output1 = solve([eq1,eq2,eq3],ΔT1,ΔT2,ΔT3,dict=True)
 
 def Balanco_de_Energia():
-    global desv,output2,S,Hv1,hl1,Hv2,hl2,hd2,hd3,T1,T2
+    global desv,output2,S,Hv1,hl1,Hv2,hl2,hd2,hd3,Hv3,T1,T2
 
     ##--------------##
     ## Temperatura ###
@@ -108,9 +107,11 @@ def Balanco_de_Energia():
 
     #Efeito 1
     T1 = Ts - output1[0][ΔT1]
+    T1sat = T1 - EPE1
     Td1 = Ts
     #Efeito 2
     T2 = T1 - EPE1 - output1[0][ΔT2]
+    T2sat = T2 - EPE2
     Td2 = T1 - EPE1
 
     ##----------##
@@ -118,18 +119,21 @@ def Balanco_de_Energia():
     ##----------##
 
     #Efeito 1
-    θ1 = T1/1000
+    θ1 = (T1+273.15)/1000
     Cp1 = 1.79+0.107*θ1+0.586*θ1**2-0.2*θ1**3
-    Hv1 = tb(T=T1+273.15,x=0.999999).h + Cp1*(EPE1)
+    Hv1 = tb(T=T1sat+273.15,x=0.999999).h + Cp1*(EPE1)
     hl1 = (-10.25 - 319.591837*x[1] + 939.795918*x[1]**2 + 0.963929*(32+T1*(9/5)) - 0.335714*x[1]*(32+T1*(9/5)))*2.326  ## Kj/Kg - Entalpia do Líquido 1
     #Efeito 2
-    θ2 = T2/1000
+    θ2 = (T2+273.15)/1000
     Cp2 = 1.79+0.107*θ2+0.586*θ2**2-0.2*θ2**3
-    Hv2 = tb(T=T2+273.15,x=0.999999).h + Cp2*(EPE2)
+    Hv2 = tb(T=(T2sat+273.15),x=0.999999).h + Cp2*(EPE2)
     hl2 = (-10.25 - 319.591837*x[2] + 939.795918*x[2]**2 + 0.963929*(32+T2*(9/5)) - 0.335714*x[2]*(32+T2*(9/5)))*2.326  ## Kj/Kg - Entalpia do Líquido 2
-    hd2 = tb(T=(T1-EPE1)+273.15,x=0.0000001).h
+    hd2 = tb(T=(T1sat+273.15),x=0.0000001).h
     #Efeito 3
-    hd3 = tb(T=(T2-EPE2)+273.15,x=0.0000001).h
+    θ2 = (T3+273.15)/1000
+    Cp3 = 1.79+0.107*θ3+0.586*θ3**2-0.2*θ3**3
+    hd3 = tb(T=(T2sat+273.15),x=0.0000001).h
+    Hv3 = tb(T=(T3sat+273.15),x=0.99999).h + Cp3*(EPE3)  
 
     ##---------##
     ## Sistema ##
