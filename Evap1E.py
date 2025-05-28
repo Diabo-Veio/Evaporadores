@@ -17,12 +17,14 @@ def Balanço_de_Massa():
     global L_,V_
     L_ = (F_*xf_)/xl_
     V_ = F_-L_
+
 def Ponto_de_Eb():
     global T_,Tsat_,EPE_,Ts_
     Tsat_ = tb(P=P_,x=0.000001).T-273.15
     EPE_ = (271.3627*xl_**2 - 9.419608*xl_ + 0.1419526*xl_*(32+Tsat_*(9/5)))*5/9                                     ## °C - Elevação do Ponto de Ebulição
     T_ = Tsat_+EPE_
     Ts_ = tb(P=Ps_,x=0.999999).T-273.15
+
 def entalpias():
     global hf_,hl_,Hv_,λs_,θ_,Cp_
     hf_ = (-10.25 - 319.591837*xf_ + 939.795918*xf_**2 + 0.963929*(32+Tf_*(9/5)) - 0.335714*xf_*(32+Tf_*(9/5)))*2.326  ## Kj/Kg - Entalpia da Alimentação
@@ -33,6 +35,7 @@ def entalpias():
     Hv_ = tb(T=Tsat_+273.15,x=0.9999999).h + Cp_*(EPE_)
     
     λs_ = (1094.002 - 0.57342487*(32+Ts_*(9/5)) + 1.5049887E-4*(32+Ts_*(9/5))**2 - 9.3061810E-7*(32+Ts_*(9/5))**3)*2.326
+
 def sistema_final():
     global S_,q_,A_,Economia_
     S_ = ((L_*hl_)+(V_*Hv_)-(F_*hf_))/λs_

@@ -6,7 +6,7 @@ from sympy import Eq
 
 def iniciando():
     global x,hl1,hl2,hl3,hd1,hd2,hd3,Hv1,Hv2,Hv3,V1,V2,V3,L1,L2,L3,T1,T2,T3,Ts,Td1,Td2,Td3,EPE1,EPE2,EPE3
-    global θ1,θ2,θ3,T3sat,ΔT,λs,SomaVi,S,ΔT1,ΔT2,ΔT3,s,v1,v2,refazer_T,refazer_A,desv_A,A1,A2,A3
+    global θ1,θ2,θ3,T3sat,ΔT,λs,SomaVi,S,ΔT1,ΔT2,ΔT3,s,v1,v2,refazer_T,refazer_A,desv_A,desv,A1,A2,A3
     #-----------------------------#
     ##### Iniciando Variáveis #####
     #-----------------------------#
@@ -43,11 +43,16 @@ def iniciando():
     ##Áreas
     desv_A = np.zeros(3)
     A1=A2=A3=0
+    #Atribuição de valores
+    x[0]= xf 
+    x[3]= x3 
+    L3 = (F*x[0])/x[3]
+    SomaVi = F-L3
+    V1=V2=V3=SomaVi/3
+    desv = np.zeros(3)
 
 def Balanco_de_Massa():
     global V1,V2,V3,SomaVi,L1,L2,L3,F
-    print("passou")
-    print(V1)
     ## Efeito 1 ##
     L1 = F-V1
     x[1] = (F*x[0])/L1
@@ -55,7 +60,6 @@ def Balanco_de_Massa():
     L2 = L1-V2
     x[2] = (L1*x[1])/L2
     
-
 def Levantamento_de_Dados():
     global Ts,hf,hl3,EPE3,T3sat,T3,λs
 
@@ -72,7 +76,6 @@ def Levantamento_de_Dados():
     ##-------------##
 
     hf = (-10.25 - 319.591837*x[0] + 939.795918*x[0]**2 + 0.963929*(32+Tf*(9/5)) - 0.335714*x[0]*(32+Tf*(9/5)))*2.326  ## Kj/Kg - Entalpia da Alimentação
-        
     ##----------##
     ## Produtos ##
     ##----------##
@@ -142,11 +145,11 @@ def Balanco_de_Energia():
     ##---------##
     #Efeito 1
 
-    eq1 = Eq(F*hf+s*λs-(F-v1)*hl1-v1*Hv1,0)
+    eq1 = Eq((F*hf)+(s*λs)-((F-v1)*hl1)-(v1*Hv1),0)
     #Efeito 2
-    eq2 = Eq((F-v1)*hl1+v1*(Hv1-hd2)-(F-v1-v2)*hl2-v2*Hv2,0)
+    eq2 = Eq(((F-v1)*hl1)+(v1*(Hv1-hd2))-((F-v1-v2)*hl2)-(v2*Hv2),0)
     #Efeito 3
-    eq3 = Eq((F-v1-v2)*hl2+v2*(Hv2-hd3)-(F-v1-v2-V3)*hl3-((SomaVi-(v1+v2))*Hv3),0)
+    eq3 = Eq(((F-v1-v2)*hl2)+(v2*(Hv2-hd3))-((F-SomaVi)*hl3)-((SomaVi-(v1+v2))*Hv3),0)
     #Resolução
     output2 = solve([eq1,eq2,eq3],v1,v2,s,dict=True)
     S = output2[0][s]
@@ -176,7 +179,8 @@ def Areas():
         refazer_A = False
 
 def loop(_xf,_F,_Tf,_Ps,_P3,_x3,_U1,_U2,_U3):
-    global refazer_T,xf,F,Tf,Ps,P3,x3,U1,U2,U3,x,L3,V1,V2,V3,SomaVi,desv
+    global refazer_T,xf,F,Tf,Ps,P3,x3,U1,U2,U3,V1,V2,V3
+
     xf = _xf
     F = _F
     Tf = _Tf
@@ -186,14 +190,7 @@ def loop(_xf,_F,_Tf,_Ps,_P3,_x3,_U1,_U2,_U3):
     U1 = _U1
     U2 = _U2
     U3 = _U3
-    ## Distribuição de Valores ##
     iniciando()
-    x[0]= xf 
-    x[3]= x3 
-    L3 = (F*x[0])/x[3]
-    SomaVi = F-L3
-    V1=V2=V3=SomaVi/3
-    desv = np.zeros(3)
 
     while refazer_T:
         

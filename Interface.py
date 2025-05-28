@@ -43,8 +43,6 @@ class tkinterApp(tk.Tk):
         frame = self.frames[cont]
         frame.tkraise()
  
-# first window frame startpage
- 
 class Tripo_Efeito(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent)
@@ -175,8 +173,7 @@ class Tripo_Efeito(tk.Frame):
         button1 = Button(self, text ="Simples Efeito", command = lambda : controller.show_frame(Simples_Efeito))
         button1.grid(row=7, column=3,columnspan=2)
         #endregion
- 
-# second window frame Simples_Efeito 
+
 class Simples_Efeito(tk.Frame):
     
     def __init__(self, parent, controller):
@@ -288,6 +285,6 @@ class Simples_Efeito(tk.Frame):
         
         button1 = ttk.Button(self, text ="Tripo_Efeito",command = lambda : controller.show_frame(Tripo_Efeito))
         button1.grid(row=6, column=3,columnspan=2)
-# Driver Code
+
 app = tkinterApp()
 app.mainloop()
