@@ -45,14 +45,16 @@ def iniciando():
     A1=A2=A3=0
 
 def Balanco_de_Massa():
-    
     global V1,V2,V3,SomaVi,L1,L2,L3,F
+    print("passou")
+    print(V1)
     ## Efeito 1 ##
     L1 = F-V1
     x[1] = (F*x[0])/L1
     ## Efeito 2 ##
     L2 = L1-V2
     x[2] = (L1*x[1])/L2
+    
 
 def Levantamento_de_Dados():
     global Ts,hf,hl3,EPE3,T3sat,T3,λs
@@ -165,7 +167,7 @@ def Areas():
     desv_A[1] = np.abs(A2-A3)/A2
     desv_A[2] = np.abs(A1-A3)/A3
 
-    if(desv_A[0] > 0.05 or desv_A[1] > 0.05 or desv_A[2] > 0.05):
+    if(desv_A[0] > 0.01 or desv_A[1] > 0.01 or desv_A[2] > 0.01):
         A_media = (A1*output1[0][ΔT1]+A2*output1[0][ΔT2]+A3*output1[0][ΔT3])/(output1[0][ΔT1]+output1[0][ΔT2]+output1[0][ΔT3])
         output1[0][ΔT1] = (output1[0][ΔT1]*A1)/A_media
         output1[0][ΔT2] = (output1[0][ΔT2]*A2)/A_media
@@ -194,17 +196,18 @@ def loop(_xf,_F,_Tf,_Ps,_P3,_x3,_U1,_U2,_U3):
     desv = np.zeros(3)
 
     while refazer_T:
+        
         Balanco_de_Massa()
         Levantamento_de_Dados()
         DeltaT()
         Distribuicao_DeltaT()
         Balanco_de_Energia()
-
+        print(V1)
         V1 = output2[0][v1]
         V2 = output2[0][v2]
         V3 = (SomaVi - (output2[0][v1]+ output2[0][v2]))
 
-        if(desv[0] < 0.05 and desv[0] < 0.05 and desv[0] < 0.05):
+        if(desv[0] < 0.01 and desv[0] < 0.01 and desv[0] < 0.01):
             refazer_T = False
             Areas()
             while refazer_A:
