@@ -70,7 +70,6 @@ def Levantamento_de_Dados():
     Steam = tb(P=Ps,x=0.9999)
     Ts = (Steam.T-273.15)
     λs = (1094.002 - 0.57342487*(32+Ts*(9/5)) + 1.5049887E-4*(32+Ts*(9/5))**2 - 9.3061810E-7*(32+Ts*(9/5))**3)*2.326
-        
     ##-------------##
     ## Alimentação ##
     ##-------------##
@@ -102,6 +101,7 @@ def Distribuicao_DeltaT():
     eq2 = Eq(ΔT2-(U3/U2)*ΔT3,0)
     eq3 = Eq(ΔT3+ΔT1+ΔT2,ΔT)
     output1 = solve([eq1,eq2,eq3],ΔT1,ΔT2,ΔT3,dict=True)
+
 
 def Balanco_de_Energia():
     global desv,output2,S,Hv1,hl1,Hv2,hl2,hd2,hd3,Hv3,T1,T2
@@ -139,7 +139,6 @@ def Balanco_de_Energia():
     Cp3 = 1.79+0.107*θ3+0.586*θ3**2-0.2*θ3**3
     hd3 = tb(T=(T2sat+273.15),x=0.0000001).h
     Hv3 = tb(T=(T3sat+273.15),x=0.99999).h + Cp3*(EPE3)  
-
     ##---------##
     ## Sistema ##
     ##---------##
@@ -199,7 +198,6 @@ def loop(_xf,_F,_Tf,_Ps,_P3,_x3,_U1,_U2,_U3):
         DeltaT()
         Distribuicao_DeltaT()
         Balanco_de_Energia()
-        print(V1)
         V1 = output2[0][v1]
         V2 = output2[0][v2]
         V3 = (SomaVi - (output2[0][v1]+ output2[0][v2]))
@@ -210,5 +208,5 @@ def loop(_xf,_F,_Tf,_Ps,_P3,_x3,_U1,_U2,_U3):
             while refazer_A:
                 Balanco_de_Energia()
                 Areas()
-        Economia = S/(SomaVi)
+        Economia = (SomaVi)/S
     return S,V1,V2,V3,x[1],x[2],T1,T2,A1,A2,A3,hl1,Hv1,hl2,Hv2,hl3,Hv3,Economia

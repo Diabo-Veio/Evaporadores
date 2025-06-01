@@ -118,9 +118,9 @@ class Tripo_Efeito(tk.Frame):
         U_Ps.grid(row = 4, column = 2,sticky = W)
         U_P.grid(row = 5, column = 2,sticky = W)
 
-        U_U1 = Label(self, text = "Kj/h*m²")
-        U_U2 = Label(self, text = "Kj/h*m²")
-        U_U3 = Label(self, text = "Kj/h*m²")
+        U_U1 = Label(self, text = "Kj/h*m²*°C")
+        U_U2 = Label(self, text = "Kj/h*m²*°C")
+        U_U3 = Label(self, text = "Kj/h*m²*°C")
         U_U1.grid(row = 2, column = 4, pady = 2,sticky = W)
         U_U2.grid(row = 3, column = 4, pady = 2,sticky = W)
         U_U3.grid(row = 4, column = 4, pady = 2,sticky = W)
